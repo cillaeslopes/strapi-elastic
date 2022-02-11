@@ -23,11 +23,10 @@ export default {
         return component;
       },
       permissions: [
-        // Uncomment to set the permissions of the plugin here
-        // {
-        //   action: '', // the action name should be plugin::plugin-name.actionType
-        //   subject: null,
-        // },
+        {
+          action: "plugin::elastic.read", // the action name should be plugins::plugin-name.actionType
+          subject: null,
+        },
       ],
     });
     app.registerPlugin({
@@ -38,33 +37,5 @@ export default {
     });
   },
 
-  bootstrap(app) {
-    // app
-    //   .getPlugin("content-manager")
-    //   .injectContentManagerComponent("editView", "right-links", {
-    //     name: "elastic",
-    //     Component: () => "elastic",
-    //   });
-  },
-  async registerTrads({ locales }) {
-    const importedTrads = await Promise.all(
-      locales.map((locale) => {
-        return import(`./translations/${locale}.json`)
-          .then(({ default: data }) => {
-            return {
-              data: prefixPluginTranslations(data, pluginId),
-              locale,
-            };
-          })
-          .catch(() => {
-            return {
-              data: {},
-              locale,
-            };
-          });
-      })
-    );
-
-    return Promise.resolve(importedTrads);
-  },
+  bootstrap(app) {},
 };

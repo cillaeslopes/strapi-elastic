@@ -1,14 +1,9 @@
-/*
- *
- * HomePage
- *
- */
-
-import React, { useEffect, useState, memo, useMemo } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { request } from "@strapi/helper-plugin";
-import DataView from "../DataView";
-import LeftMenu from "../LeftMenu";
-import GlobalStyle from "./GlobalStyles";
+import { Box } from "@strapi/design-system/Box";
+import { Flex } from '@strapi/design-system/Flex';
+import DataView from "../../components/DataView";
+import LeftMenu from "../../components/LeftMenu";
 
 const INITIAL_PAGE = 1;
 const INITIAL_LIMIT = "10";
@@ -40,10 +35,8 @@ const HomePage = () => {
     }
   };
 
-  // fetch data for active model
   const fetchData = () => {
     if (activeModel && activeModel.index) {
-      // fetch for the model data
       setLoading(true);
       request(
         `/elastic/model?index=${activeModel.index}&_start=${page}&_limit=${limit}`,
@@ -63,16 +56,14 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    // fetch all models
     request(`/elastic/models`, {
       method: "GET",
-    })
-      .then((res) => {
-        if (res && res.length && res.length > 0) {
-          setModels(res);
-          setActiveModel(res[0]);
-        }
-      })
+    }).then((res) => {
+      if (res && res.length && res.length > 0) {
+        setModels(res);
+        setActiveModel(res[0]);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -80,9 +71,8 @@ const HomePage = () => {
   }, [activeModel, page, limit]);
 
   return (
-    <div className="row">
-      <GlobalStyle />
-      <div className="d-flex w-100 px-3">
+    <Box>
+      <Flex style={{ height: "100vh", alignItems: "baseline" }}>
         <LeftMenu
           models={models}
           activeModel={activeModel}
@@ -106,8 +96,8 @@ const HomePage = () => {
           isDeleted={isDeleted}
           hasMapping={hasMapping}
         />
-      </div>
-    </div>
+      </Flex>
+    </Box>
   );
 };
 
