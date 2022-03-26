@@ -23,6 +23,7 @@ module.exports = {
       allModels,
       _.partialRight(_.pick, [
         "model",
+        "content",
         "plugin",
         "index",
         "migration",
@@ -52,18 +53,17 @@ module.exports = {
       };
     }
 
-    status.hasMapping = status.created && !_.isEmpty(map.body[index]);
+    status.hasMapping = status.created && !_.isEmpty(map[index]);
 
     try {
       data = await strapi.elastic.find(index, _limit, _start);
     } catch (e) {
+      console.log(e);
       return ctx.send({ data: null, total: 0, status });
     }
 
-    if (data.statusCode !== 200) return ctx.badRequest();
-
     return ctx.send({
-      data: sanitizeHits(data.body.hits.hits),
+      data: sanitizeHits(data.hits.hits),
       total: count && count.body && count.body.count,
       status,
     });

@@ -40,6 +40,9 @@ module.exports = {
   checkRequest: (ctx) => {
     const { settings } = strapi.config.elasticsearch;
 
+    settings.validMethod = settings.validMethod || ['PUT', 'POST', 'DELETE'];
+    settings.validStatus = settings.validStatus || [200, 201];
+
     return (
       settings.validMethod.includes(ctx.request.method) &&
       settings.validStatus.includes(ctx.response.status)
@@ -302,7 +305,35 @@ module.exports = {
       //
     }
   },
+  generateMappings: async ({ targetModels, data }) => {
+    //
+    if (!_.isArray(targetModels)) targetModels = [targetModels];
 
+    const rootPath = path.resolve(__dirname, '../../../');
+    const exportPath = `${rootPath}/exports/elasticsearch`;
+
+    for (const targetModel of targetModels) {
+      let map = {};
+      // get mapping;
+      if (!data) {
+        map = await strapi.elastic.indices.getMapping({
+          index: targetModel.index,
+        });
+      }
+
+      if ((map && map.body) || data) {
+        fs.writeFile(
+          `${exportPath}/${targetModel.model}.index.json`,
+          JSON.stringify(map.body || data, null, 2),
+          (err) => {
+            if (err) throw err;
+          }
+        );
+      }
+
+      //
+    }
+  },
   checkEnableModels: async () => {
     const { models } = strapi.config.elasticsearch;
 
@@ -417,7 +448,7 @@ module.exports = {
           }
         } catch (e) {
           strapi.log.warn(
-            `There is an error to get mapping of ${targetModel.index} index from Elasticsearch`
+            `There is an error to get mapping of ${targetModel.index} index from Elasticsearch. ${e}`
           );
         }
       }
