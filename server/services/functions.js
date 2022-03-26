@@ -176,11 +176,7 @@ module.exports = {
     const { models, settings } = strapi.config.elasticsearch;
     const targetModel = models.find((item) => item.model === model);
 	  
-for (const [key, value] of Object.entries(targetModel)) {
-  console.log(`${key}: ${value}`);
-}
-
-    const apiQueryKey = `api::${targetModel.model}.${targetModel.content}`;
+    const apiQueryKey = `api::${targetModel.model}.${targetModel.model}`;
 
 strapi.log.debug(`TGM ${apiQueryKey} to elasticsearch`);
 
