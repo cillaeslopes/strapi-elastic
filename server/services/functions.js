@@ -66,7 +66,6 @@ module.exports = {
       return {
         delete: {
           _index: targetModel.index,
-          _type: "_doc",
           _id: id,
         },
       };
@@ -158,7 +157,6 @@ module.exports = {
         index: {
           _index: targetModel.index,
           _id: doc[targetModel.pk || "id"],
-          _type: "_doc",
         },
       },
       doc,
@@ -177,7 +175,10 @@ module.exports = {
   migrateModel: async (model, params = {}) => {
     const { models, settings } = strapi.config.elasticsearch;
     const targetModel = models.find((item) => item.model === model);
-    const apiQueryKey = `api::${targetModel.model}.${targetModel.content}`;
+	  
+    const apiQueryKey = `api::${targetModel.model}.${targetModel.model}`;
+
+strapi.log.debug(`TGM ${apiQueryKey} to elasticsearch`);
 
     const { indexExist } = await strapi.elastic.indices.exists({
       index: targetModel.index,
@@ -247,7 +248,7 @@ module.exports = {
       body: {
         sort: [
           {
-            updated_at: {
+            updatedAt: {
               order: "desc",
               unmapped_type: "date",
             },
@@ -307,7 +308,6 @@ async function parseDataToElastic(targetModel, data) {
       index: {
         _index: targetModel.index,
         _id: doc[targetModel.pk || "id"],
-        _type: "_doc",
       },
     },
     doc,
