@@ -97,11 +97,41 @@ module.exports = [
 
 After the first run of the project, it creates a config file at `PROJECT/config/elasticsearch.js`
 
-**config file should look like the image**
+**config file should look like below:**
 
-<p align="center">
-<img src="https://i.ibb.co/2yCbbmp/code3.png" alt="code3" border="0">
-</p>
+```js
+module.exports = ({ env }) => ({
+  connection: {
+    // https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/au th-reference.html
+    node: env('ELASTICSEARCH_HOST', 'http://127.0.0.1:9200'),
+    auth: {
+      username: env('ELASTICSEARCH_USERNAME'),
+      password: env('ELASTICSEARCH_PASSWORD'),
+    },
+  },
+  settings: {
+    version: 1,
+    validStatus: [200, 201], validMethod: ['PUT', 'POST', 'DELETE'], fillByResponse: false, importLimit: 3000, index_prefix: '', index_postfix: '',
+    removeExistIndexForMigration: false,
+  },
+  models: [
+    {
+      model: 'article',
+      pk: 'id', 
+      plugin: null, 
+      enable: false, 
+      index: 'article', 
+      relations: [], 
+      conditions: {}, 
+      fillByResponse: true, 
+      migration: false, 
+      supportAdminPanel: true, 
+      supportDefaultApis: true, 
+      urls: [],
+    }
+  ]
+})
+```
 
 By default, syncing occurs in two ways
 
