@@ -58,7 +58,9 @@ module.exports = {
     try {
       data = await strapi.elastic.find(index, _limit, _start);
     } catch (e) {
-      console.log(e);
+      strapi.log.warn(
+        `There is an error to get fetch model ${index} from Elasticsearch`
+      );
       return ctx.send({ data: null, total: 0, status });
     }
 

@@ -182,7 +182,6 @@ module.exports = {
     const propertiesKeys = Object.keys(properties);
 
     for (const doc of docs) {
-      //
       const res = {};
       const dockKeyUsed = [];
 
@@ -192,8 +191,6 @@ module.exports = {
         // check type of data with mapping in config
 
         if (propertiesKeys.includes(docKey)) {
-          //
-
           const DOC = doc[docKey];
           const DOC_PROPERTY = properties[docKey].type;
 
@@ -211,80 +208,47 @@ module.exports = {
             });
 
             if (!_.isEmpty(filteredData.result)) {
-              // check all element
               const finalArray = [];
               if (_.isArray(filteredData.result)) {
-                //
                 filteredData.result.forEach((item) => {
-                  //
                   if (!_.isEmpty(item)) {
-                    //
                     finalArray.push(item);
-                    //
                   }
-                  //
                 });
-                //
                 filteredData.result = finalArray;
-                //
               }
 
               res[docKey] = filteredData.result;
 
               dockKeyUsed.push(docKey);
-              //
             } else {
-              //
-              // res[docKey] = null;
               dockKeyUsed.push(docKey);
-              //
             }
             newMappings = filteredData.newMappings;
 
-            // check numbers
           } else if (
             _.isNumber(DOC) &&
             elasticSearchNumericTypes.includes(DOC_PROPERTY)
           ) {
-            //
             res[docKey] = DOC;
             dockKeyUsed.push(docKey);
-
-            // check strings
           } else if (_.isString(DOC) && DOC_PROPERTY === "text") {
-            //
             res[docKey] = DOC;
             dockKeyUsed.push(docKey);
-
-            // check boolean
           } else if (_.isBoolean(DOC) && DOC_PROPERTY === "boolean") {
-            //
             res[docKey] = DOC;
             dockKeyUsed.push(docKey);
-
-            // check date
           } else if (_.isDate(DOC) && DOC_PROPERTY === "date") {
-            //
             res[docKey] = DOC;
             dockKeyUsed.push(docKey);
-
-            // check date
           } else if (_.isString(DOC) && DOC_PROPERTY === "date") {
-            //
             res[docKey] = DOC;
             dockKeyUsed.push(docKey);
-
-            // other types
           } else {
-            //
-            // res[docKey] = null;
             dockKeyUsed.push(docKey);
-            //
           }
         } else {
-          //
-          //some logic
-          //
+          // not implemented yet
         }
       }
       // push property that exist in mapping config but not in entered data
@@ -296,17 +260,12 @@ module.exports = {
     }
     // return data it depends on outputDataType
     if (outputDataType === "array") {
-      //
       return { result, newMappings };
-      //
     } else if (outputDataType === "object") {
-      //
       return { result: result[0], newMappings };
-      //
     }
   },
   generateMappings: async ({ targetModels, data }) => {
-    //
     if (!_.isArray(targetModels)) targetModels = [targetModels];
 
     const rootPath = path.resolve(__dirname, '../../../');
@@ -314,7 +273,6 @@ module.exports = {
 
     for (const targetModel of targetModels) {
       let map = {};
-      // get mapping;
       if (!data) {
         map = await strapi.elastic.indices.getMapping({
           index: targetModel.index,
@@ -330,8 +288,6 @@ module.exports = {
           }
         );
       }
-
-      //
     }
   },
   checkEnableModels: async () => {
@@ -341,7 +297,6 @@ module.exports = {
 
     await enableModels.forEach(async (model) => {
       const indicesMapping = {};
-      // const indexName = model.index_postfix + model.index + model.index_postfix;
       try {
         const indexMap = await strapi.elastic.indices.getMapping({
           index: model.index,
@@ -376,7 +331,6 @@ module.exports = {
     }
   },
   findMappingConfig: async ({ targetModel }) => {
-    //
     const rootPath = path.resolve(__dirname, "../../../");
 
     const mappingConfigFilePath = `${rootPath}/exports/elasticsearch/${targetModel.model}.index.json`;
@@ -407,9 +361,7 @@ module.exports = {
     const enableModels = models.filter((model) => model.enabled);
 
     for (const index of indicesMapConfigFile) {
-      //
       if (indexFilePattern.test(index)) {
-        //
         const map = require(`${exportPath}/${index}`);
 
         const [, model] = index.match(indexFilePattern);
@@ -424,18 +376,13 @@ module.exports = {
     }
 
     for (const targetModel of enableModels) {
-      //
       if (!strapi.elastic.indicesMapping[targetModel.model]) {
-        //
         try {
-          //
-
           const indexMap = await strapi.elastic.indices.getMapping({
             index: targetModel.index,
           });
 
           if (indexMap.statusCode === 200) {
-            //
             strapi.elastic.indicesMapping[targetModel.model] =
               indexMap.body[targetModel.index];
 
@@ -443,17 +390,13 @@ module.exports = {
               targetModels: targetModel,
               data: indexMap.body,
             });
-
-            //
           }
         } catch (e) {
           strapi.log.warn(
-            `There is an error to get mapping of ${targetModel.index} index from Elasticsearch. ${e}`
+            `There is an error to get mapping of ${targetModel.index} index from Elasticsearch`
           );
         }
       }
     }
-
-    //
   },
 };
