@@ -10,7 +10,7 @@
   "dependencies": {
     "@buffetjs/core": "^3.3.8",
     "@buffetjs/styles": "^3.3.8",
-    "@elastic/elasticsearch": "~8.0.0",
+    "@elastic/elasticsearch": "7.10.0",
     "axios": "^0.20.0",
     "lodash": "^4.17.21",
     "moment": "^2.27.0"
