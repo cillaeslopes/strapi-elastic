@@ -65,7 +65,7 @@ module.exports = {
     }
 
     return ctx.send({
-      data: sanitizeHits(data.hits.hits),
+      data: sanitizeHits(data.body.hits.hits),
       total: count && count.body && count.body.count,
       status,
     });
