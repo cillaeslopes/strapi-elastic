@@ -29,8 +29,9 @@ module.exports = ({ env }) => ({
     // https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/auth-reference.html
     node: env('ELASTICSEARCH_HOST', 'http://127.0.0.1:9200'),
   },
-  setting: {
+  settings: {
     importLimit: 3000,
+    validStatus: [200, 201], validMethod: ['PUT', 'POST', 'DELETE'], fillByResponse: false, importLimit: 3000, index_prefix: '', index_postfix: '',
     removeExistIndexForMigration: false,
   },
   models: ${JSON.stringify(modelsConfig, null, 2)}
