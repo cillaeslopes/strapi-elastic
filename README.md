@@ -217,8 +217,6 @@ and model config should change to
 
 If the `fillByResponse` settings are enabled for the model, the same data will be stored in Elasticsearch, otherwise the data will be retrieved from the database using pk and stored in Elasticsearch.
 
-````
-
 # Functions <a name="functions"></a>
 
 | Command                         | Description                    |           example            |
@@ -249,7 +247,7 @@ For use official Elasticsearch package we can use `strapi.elastic`, and can acce
 const count = strapi.elastic.count({ index: "article" }); // https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#_count
 
 const article = strapi.elastic.get({ index: "article", id: 1 }); // https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#_get
-````
+```
 
 ### CreateOrUpdate <a name="create_or_update"></a>
 
