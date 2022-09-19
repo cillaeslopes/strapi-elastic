@@ -1,3 +1,5 @@
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 <p align="center">
   <a href="https://github.com/cillaeslopes/strapi-elastic" rel="noopener">
  <img src="https://i.ibb.co/zG6Nj3g/Untitled-1.jpg" alt="Project logo" width=800></a>
