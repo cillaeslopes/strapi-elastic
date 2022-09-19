@@ -5,12 +5,15 @@
   <br/>
 </p>
 
+<hr>
+<h4 align="center">
+  <b>⚠️ WARNING: This repository is no longer being maintained </b>
+</h4>
 <hr >
 <h4 align="center">
-tested on strapi v4.x
+  tested on strapi v4.x
 
-latest test: v4.0.6
-
+  latest test: v4.0.6
 </h4>
 <bt/>
 <h4 align="center">
